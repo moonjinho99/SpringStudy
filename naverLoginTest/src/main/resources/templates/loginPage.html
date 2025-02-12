@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<a href="http://localhost:8787/oauth2/authorization/naver">네이버 로그인(로컬)</a>
+<a href="https://tutor-tutee.shop/oauth2/authorization/naver">네이버 로그인(서버)</a>
+
+</body>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const code = urlParams.get('code'); // 네이버 로그인 후 받은 code
+const state = urlParams.get('state'); // 네이버 로그인 후 받은 state
+
+if (code && state) {
+    fetch('http://localhost:8787/oauth2/callback', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            code: code,
+            state: state
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        // 백엔드에서 받은 데이터 처리 (예: JWT 토큰, 사용자 정보 등)
+        console.log(data);
+        // 예: JWT 토큰을 localStorage나 sessionStorage에 저장
+        localStorage.setItem('access_token', data.access);
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+
+</html>
