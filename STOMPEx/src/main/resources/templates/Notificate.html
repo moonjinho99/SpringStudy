@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>STOMP Notification</title>
+    <script src="https://cdn.jsdelivr.net/sockjs/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+    <h1>실시간 알림</h1>
+    <div id="notificationArea"></div>
+    <button onclick="sendNotification()">알림 보내기</button>
+
+    <script>
+        var stompClient = null;
+
+        function connect() {
+            var socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/notifications', function (notification) {
+                    showNotification(notification.body);
+                });
+            });
+        }
+
+        function sendNotification() {
+            stompClient.send("/app/sendNotification", {}, "새로운 알림이 도착했습니다!");
+        }
+
+        function showNotification(message) {
+            var notificationArea = document.getElementById("notificationArea");
+            var notification = document.createElement("div");
+            notification.textContent = message;
+            notificationArea.appendChild(notification);
+        }
+
+        connect();
+    </script>
+</body>
+</html>
