@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security 
+						http://www.springframework.org/schema/security/spring-security.xsd 
+						http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd">
+		
+		
+    	<bean id="customUserDetailsService" class="interceptor.CustomUserDetailService"/>
+   		<bean id="customAuthenticationProvider" class="interceptor.CustomAuthenticationProvider"/>
+		<bean id="customLoginSuccess" class="interceptor.LoginSuccessHandler"/>
+
+		<security:http auto-config="true" use-expressions="false">
+			<security:intercept-url pattern="/book/*" access="ROLE_MEMBER"/>
+			<security:form-login login-page="/member/login" login-processing-url="/member/login.do" username-parameter="userId" password-parameter="userPassword" authentication-success-handler-ref="customLoginSuccess"/>
+		</security:http>
+		<security:authentication-manager>		
+			<security:authentication-provider ref="customAuthenticationProvider"/>
+			<security:authentication-provider user-service-ref="customUserDetailsService"/>
+		</security:authentication-manager> 
+</beans>

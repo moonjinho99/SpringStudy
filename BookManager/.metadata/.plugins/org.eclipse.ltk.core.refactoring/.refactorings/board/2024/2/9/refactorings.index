@@ -1,0 +1,10 @@
+1708996787748	Move 'servlet-context.xml' to 'spring'
+1708996885544	Move 'servlet-context.xml' to 'appServlet'
+1708996888597	Move 'security-context.xml' to 'spring'
+1709080983670	Copy folders
+1709080994010	Delete element
+1709081303552	Move 'BookMapper.xml' to 'mapper'
+1709082368169	Rename type 'imgDTO'
+1709085042891	Move 2 resources to 'board'
+1709085060511	Move 'book' to 'board'
+1709097284447	Delete element

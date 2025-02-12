@@ -1,0 +1,54 @@
+var searchList = {}
+var bookData = [];
+
+window.onload = function(){
+	searchTable();
+}
+
+function searchTable(){	
+	var searchList = $("#book_table").DataTable({
+		columns:[
+			{data:"rowNum", defaultContent:""},
+			{data:"img", defaultContent:""},
+			{data:"book_title", defaultContent:""},
+			{data:"book_category", defaultContent:""},
+			{data:"book_author", defaultContent:""},
+			{data:"book_reg", defaultContent:""},
+			{data:"book_quantity", defaultContent:""},
+			{data:"book_price", defaultContent:""}
+		],
+		ajax:{
+			type:"POST",
+			url:"/book/list.do",
+			contentType:"application/json; charset=utf-8",
+			dataFilter:function(jsonString){			
+				bookData.push(jsonString);				
+				return jsonString;
+			}
+		},
+		pageLength: 3,
+		bPaginate: true,
+		bLengthChange: true,
+		lengthMenu : [[3,5,10,-1],[3,5,10,"All"]],
+		bAutoWidth: false,
+		processing: true,
+		responsive: true,
+		bServerSide: false,
+		sServerMethod: "POST",
+		searching: true,
+	});
+		
+	console.log("bookData : "+bookData);
+}
+
+$("#book_table").on('click', 'tbody tr', function () {
+	    var row = $("#book_table").DataTable().row(this).data();
+	    console.log(row.book_code);
+		window.location.href = "/book/detail?book_code="+row.book_code;
+		
+});
+
+function regBookPage()
+{
+	window.location.href="bookReg"
+}

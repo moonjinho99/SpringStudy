@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tck.board.book.mapper.BookMapper">
+  
+  <select id="getBookList" resultType="com.tck.board.book.model.BookDTO">
+  		select 
+  			ROW_NUMBER() over(ORDER by book_reg desc) as rowNum,
+  			book_code,
+  			book_title,
+  			book_category,
+  			book_author,
+  			book_reg,
+  			book_content,
+  			book_quantity,
+  			book_price
+  		 from tbl_book
+  		 where 1=1
+  		 order by book_reg desc,book_code desc
+  </select>
+  
+  <select id="getImgList" parameterType="int" resultType="com.tck.board.img.model.ImgDTO">
+  		select * from tbl_book_img where book_code = #{book_code}
+  </select>
+  
+  
+  <select id="getBookDetail" parameterType="int" resultType="com.tck.board.book.model.BookDTO">
+  		select * from tbl_book where book_code = #{book_code}
+  </select>
+  
+  
+  <select id="maxBookCode" resultType="int">
+  		select max(book_code) from tbl_book
+  </select>
+  
+  <insert id="insertBook" parameterType="com.tck.board.book.model.BookDTO">
+  		insert into tbl_book(book_title,book_category,book_author,book_reg,book_content,book_quantity,book_price) 
+  		values(#{book_title},#{book_category},#{book_author},#{book_reg},#{book_content},#{book_quantity},#{book_price})
+  </insert>
+  
+  <insert id="insertImg" parameterType="com.tck.board.img.model.ImgDTO">  		
+  		insert into tbl_book_img(img_name,img_uuid,img_path,book_code) value(#{img_name},#{img_uuid},#{img_path},#{book_code})	
+  </insert>
+  
+  
+  <update id="updateBookList" parameterType="com.tck.board.book.model.BookDTO">
+  		update tbl_book 
+  		set book_title = #{book_title}, 
+  		book_author = #{book_author}, 
+  		book_category = #{book_category}, 
+  		book_quantity = #{book_quantity},
+  		book_price = #{book_price},
+  		book_content = #{book_content}
+  		where book_code = #{book_code}
+  </update>
+  
+  <update id="updateImg" parameterType="com.tck.board.book.model.ImgDTO">
+  		update tbl_book_img
+  		set img_name = #{img_name},
+  		img_path = #{img_path},
+  		img_uuid = #{img_uuid}
+  		where book_code = #{book_code}
+  </update>
+  
+  
+  
+  <delete id="deleteBookList" parameterType="int">
+  		delete from tbl_book where book_code = #{book_code}
+  </delete>
+  
+  <delete id="deleteBookImg" parameterType="int">
+  		delete from tbl_book_img where book_code = #{book_code}
+  </delete>
+  
+  </mapper>

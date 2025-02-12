@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.tck.board.mapper.BoardMapper">
+  
+  	<select id="getBoardList" resultType="com.tck.board.model.BoardDTO">
+  		select * from board
+  	</select>
+  
+  	<insert id="writeBoard">
+  		insert into board(title, content, writeuser) values(#{title},#{content},#{writeUser})
+  	</insert>
+  	
+  	<select id="getBoardDetail" resultType="com.tck.board.model.BoardDTO">
+  		select * from board where seq_num = #{seq_num}
+  	</select>
+  	
+  	<update id="updateBoard">
+  		update board set title=#{title}, content=#{content} where seq_num = #{seq_num}
+  	</update>
+  	
+  	<delete id="deleteBoard">
+  		delete from board where seq_num = #{seq_num}
+  	</delete>
+  	
+  </mapper>
